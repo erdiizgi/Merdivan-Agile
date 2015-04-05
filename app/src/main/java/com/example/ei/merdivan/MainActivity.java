@@ -16,12 +16,19 @@ public class MainActivity extends ActionBarActivity {
 
     Button observationButton;
     Button observationDetailButton;
+    Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         addListenerOnButton();
+    }
+
+    public void onResume()
+    {
+        super.onResume();
+        db = new Database(getApplicationContext());
     }
 
 
