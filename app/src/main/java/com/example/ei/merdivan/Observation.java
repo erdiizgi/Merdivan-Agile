@@ -15,6 +15,7 @@ public class Observation extends ActionBarActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.observation_create);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 }

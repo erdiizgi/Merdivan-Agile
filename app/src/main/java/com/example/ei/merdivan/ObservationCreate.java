@@ -1,8 +1,10 @@
 package com.example.ei.merdivan;
 
+import android.content.Intent;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,7 +25,6 @@ public class ObservationCreate extends FragmentActivity implements LocationListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_observation_create);
         setUpMapIfNeeded();
-
     }
 
     @Override
@@ -100,4 +101,5 @@ public class ObservationCreate extends FragmentActivity implements LocationListe
     public void deactivate() {
         mListener = null;
     }
+
 }
