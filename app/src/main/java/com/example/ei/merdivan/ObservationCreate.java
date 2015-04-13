@@ -9,6 +9,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -22,12 +23,14 @@ public class ObservationCreate extends FragmentActivity implements LocationListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_observation_create);
         setUpMapIfNeeded();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+
     }
 
     /**
@@ -47,6 +50,7 @@ public class ObservationCreate extends FragmentActivity implements LocationListe
      */
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
+
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
@@ -79,8 +83,12 @@ public class ObservationCreate extends FragmentActivity implements LocationListe
 
 
     private void setUpMap() {
+
         mMap.addMarker(new MarkerOptions().position(new LatLng(38.41885, 27.12872)).title("Izmir"));
         mMap.setMyLocationEnabled(true);
+        LatLng ll = new LatLng(38.41885, 27.12872);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ll, 12));
+        mMap.getUiSettings().setZoomControlsEnabled(true);
     }
 
     @Override
