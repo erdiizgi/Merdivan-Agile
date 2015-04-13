@@ -66,7 +66,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View arg0) {
 
-                Intent intent = new Intent(context, Observation.class);
+                Intent intent = new Intent(context, ObservationCreate.class);
                 startActivity(intent);
             }
         });
