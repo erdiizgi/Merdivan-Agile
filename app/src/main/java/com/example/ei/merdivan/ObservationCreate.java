@@ -1,10 +1,11 @@
 package com.example.ei.merdivan;
 
-import android.content.Intent;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBarActivity;
 
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -14,8 +15,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 
-public class ObservationCreate extends FragmentActivity implements LocationListener, LocationSource {
+public class ObservationCreate extends ActionBarActivity implements LocationListener, LocationSource {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private OnLocationChangedListener mListener;
@@ -25,6 +30,7 @@ public class ObservationCreate extends FragmentActivity implements LocationListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_observation_create);
         setUpMapIfNeeded();
+
     }
 
     @Override
@@ -33,6 +39,7 @@ public class ObservationCreate extends FragmentActivity implements LocationListe
         setUpMapIfNeeded();
 
     }
+
 
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
@@ -101,5 +108,4 @@ public class ObservationCreate extends FragmentActivity implements LocationListe
     public void deactivate() {
         mListener = null;
     }
-
 }
