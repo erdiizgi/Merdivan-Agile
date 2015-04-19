@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
@@ -19,11 +20,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+
 
 public class ObservationCreate extends ActionBarActivity implements LocationListener, LocationSource {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private OnLocationChangedListener mListener;
+    private	GPSTracker gps;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +42,13 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.observation_create_menu, menu);
+        return true;
     }
 
 
@@ -83,16 +94,12 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
         if( mListener != null )
         {
             mListener.onLocationChanged( location );
-
             //Move the camera to the user's location and zoom in!
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 12.0f));
         }
     }
 
-
     private void setUpMap() {
-
-        mMap.addMarker(new MarkerOptions().position(new LatLng(38.41885, 27.12872)).title("Izmir"));
         mMap.setMyLocationEnabled(true);
         LatLng ll = new LatLng(38.41885, 27.12872);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ll, 12));
@@ -107,5 +114,33 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
     @Override
     public void deactivate() {
         mListener = null;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_current_location:
+                dropPin();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void dropPin() {
+        gps = new GPSTracker(ObservationCreate.this);
+
+        if(gps.canGetLocation()) {
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+            mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Yeni Gözlem"));
+            CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude));
+            CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
+            mMap.moveCamera(center);
+            mMap.animateCamera(zoom);
+        } else {
+            gps.showSettingsAlert();
+        }
     }
 }
