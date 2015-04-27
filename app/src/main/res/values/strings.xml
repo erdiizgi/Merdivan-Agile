@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Merdivan</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_observation_create"></string>
+    <string name="title_activity_observation_create">Gözlem Yarat</string>
     <string name="action_current_location">Current Location</string>
+    <string name="find">Ara</string>
+    <string name="hint">Adres Giriniz</string>
 </resources>
