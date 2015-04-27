@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Merdivan-Agile.iml" filepath="$PROJECT_DIR$/Merdivan-Agile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Merdivan.iml" filepath="$PROJECT_DIR$/Merdivan.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

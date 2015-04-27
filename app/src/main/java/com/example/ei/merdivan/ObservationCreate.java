@@ -16,6 +16,7 @@ import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -26,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -41,12 +43,13 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
-public class ObservationCreate extends ActionBarActivity implements LocationListener, LocationSource {
+public class ObservationCreate extends ActionBarActivity implements LocationListener, LocationSource, GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private OnLocationChangedListener mListener;
     private	GPSTracker gps;
     private Button mBtnFind;  // Address search button
     private EditText etPlace; // Address input
+    private Marker current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,7 +196,7 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
         if(gps.canGetLocation()) {
             double latitude = gps.getLatitude();
             double longitude = gps.getLongitude();
-            mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Yeni Gözlem"));
+            current = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Yeni Gözlem"));
             CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude));
             CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
             mMap.moveCamera(center);
@@ -201,6 +204,16 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
         } else {
             gps.showSettingsAlert();
         }
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+            @Override
+            public void onInfoWindowClick(Marker arg0) {
+
+                Toast.makeText(getApplicationContext(), "Category List will be opened here",  Toast.LENGTH_LONG).show();
+                current.hideInfoWindow();
+            }
+        });
     }
 
     private String downloadUrl(String strUrl) throws IOException {
@@ -240,6 +253,22 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
 
         return data;
     }
+
+    @Override
+    public View getInfoWindow(Marker marker) {
+        return null;
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        return null;
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+
+    }
+
 
     /** A class, to download Places from Geocoding webservice */
     private class DownloadTask extends AsyncTask<String, Integer, String>{

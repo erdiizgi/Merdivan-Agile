@@ -33,6 +33,4 @@ public class ObservationDetail extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
 }
