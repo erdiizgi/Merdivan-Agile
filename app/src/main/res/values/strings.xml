@@ -3,5 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_observation_create">Map</string>
+    <string name="title_activity_observation_create"></string>
+    <string name="action_current_location">Current Location</string>
 </resources>

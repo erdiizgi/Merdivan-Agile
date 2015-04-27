@@ -1,9 +1,9 @@
 package com.example.ei.merdivan;
 
-import android.app.ActionBar;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.view.MenuItem;
 
 /**
@@ -33,4 +33,6 @@ public class ObservationDetail extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 }
