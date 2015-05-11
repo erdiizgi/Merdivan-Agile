@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
-
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,6 +23,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +35,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Context;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 
 import org.json.JSONObject;
 
@@ -42,6 +53,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
+import android.widget.PopupWindow;
+import android.view.LayoutInflater;
 
 public class ObservationCreate extends ActionBarActivity implements LocationListener, LocationSource, GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
@@ -50,12 +63,17 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
     private Button mBtnFind;  // Address search button
     private EditText etPlace; // Address input
     private Marker current;
+    public ImageButton imageButton1,imageButton2,imageButton3,imageButton4,imageButton5,imageButton6,imageButton7,imageButton8;
+    private PopupWindow pwindo;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_observation_create);
         setUpMapIfNeeded();
+
 
         // Getting reference to EditText
         etPlace = (EditText) findViewById(R.id.et_place);
@@ -210,11 +228,222 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
             @Override
             public void onInfoWindowClick(Marker arg0) {
 
-                Toast.makeText(getApplicationContext(), "Category List will be opened here",  Toast.LENGTH_LONG).show();
-                current.hideInfoWindow();
+                initiatePopupWindow();
             }
         });
     }
+
+
+    private void initiatePopupWindow() {
+        try {
+// We need to get the instance of the LayoutInflater
+            LayoutInflater inflater = (LayoutInflater) ObservationCreate.this
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.screen_popup,
+                    (ViewGroup) findViewById(R.id.popup_element));
+            pwindo = new PopupWindow(layout, 550, 1150, true);
+            pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
+
+
+
+            imageButton1 = (ImageButton) layout.findViewById(R.id.ImageButton1);
+
+            imageButton1.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+
+                    pwindo.dismiss();
+                    Toast.makeText(ObservationCreate.this, "Elektrik Kesintisi", Toast.LENGTH_SHORT).show();
+
+/*
+                    mMap.addMarker(new MarkerOptions()
+                                    .position(LatLng)
+                                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.electric)));
+                                            */
+
+
+                }
+
+            });
+
+
+
+
+            imageButton2 = (ImageButton) layout.findViewById(R.id.ImageButton2);
+
+            imageButton2.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+
+                    pwindo.dismiss();
+                    Toast.makeText(ObservationCreate.this,"Su Sorunu", Toast.LENGTH_SHORT).show();
+
+                 /*   mMap.addMarker(new MarkerOptions()
+                            .position(LatLng)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.water)));
+                            */
+
+                }
+
+            });
+
+
+
+
+
+            imageButton3 = (ImageButton) layout.findViewById(R.id.ImageButton3);
+
+            imageButton3.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+
+                    pwindo.dismiss();
+                    Toast.makeText(ObservationCreate.this,"Trafik Sorunu", Toast.LENGTH_SHORT).show();
+/*
+                    mMap.addMarker(new MarkerOptions()
+                            .position(LatLng)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.traffic)));
+*/
+                }
+
+            });
+
+
+
+
+            imageButton4 = (ImageButton) layout.findViewById(R.id.ImageButton4);
+
+            imageButton4.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+
+                    pwindo.dismiss();
+                    Toast.makeText(ObservationCreate.this,"Yol Sorunu", Toast.LENGTH_SHORT).show();
+
+                    /*
+                    mMap.addMarker(new MarkerOptions()
+                            .position(LatLng)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.cone)));
+                            */
+
+                }
+
+            });
+
+
+
+
+            imageButton5 = (ImageButton) layout.findViewById(R.id.ImageButton5);
+
+            imageButton5.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+
+                    pwindo.dismiss();
+                    Toast.makeText(ObservationCreate.this,"Çevre ve Parklar", Toast.LENGTH_SHORT).show();
+
+             /*       mMap.addMarker(new MarkerOptions()
+                            .position(LatLng)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.flower)));
+                            */
+
+                }
+
+            });
+
+
+
+            imageButton6 = (ImageButton) layout.findViewById(R.id.ImageButton6);
+
+            imageButton6.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+
+                    pwindo.dismiss();
+                    Toast.makeText(ObservationCreate.this,"Çöp ve Atık", Toast.LENGTH_SHORT).show();
+
+/*
+                    mMap.addMarker(new MarkerOptions()
+                            .position(LatLng)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.trash)));
+                            */
+
+                }
+
+            });
+
+
+
+
+            imageButton7 = (ImageButton) layout.findViewById(R.id.ImageButton7);
+
+            imageButton7.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+
+                    pwindo.dismiss();
+                    Toast.makeText(ObservationCreate.this,"Gürültü Kirliliği", Toast.LENGTH_SHORT).show();
+
+                    /*
+                    mMap.addMarker(new MarkerOptions()
+                            .position(LatLng)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.megaphone)));
+
+                            */
+
+                }
+
+            });
+
+
+
+
+            imageButton8 = (ImageButton) layout.findViewById(R.id.ImageButton8);
+
+            imageButton8.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+
+                    pwindo.dismiss();
+                    Toast.makeText(ObservationCreate.this,"Diğer", Toast.LENGTH_SHORT).show();
+
+/*
+                    mMap.addMarker(new MarkerOptions()
+                            .position(LatLng)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.other)));
+                            */
+
+
+
+                }
+
+            });
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    private OnClickListener cancel_button_click_listener = new OnClickListener() {
+        public void onClick(View v) {
+            pwindo.dismiss();
+
+        }
+    };
+
+
 
     private String downloadUrl(String strUrl) throws IOException {
         String data = "";
@@ -268,26 +497,24 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
     public void onInfoWindowClick(Marker marker) {
 
     }
-
-
     /** A class, to download Places from Geocoding webservice */
-    private class DownloadTask extends AsyncTask<String, Integer, String>{
+    private class DownloadTask extends AsyncTask<String, Integer, String> {
         String data = null;
 
         // Invoked by execute() method of this object
         @Override
         protected String doInBackground(String... url) {
-            try{
+            try {
                 data = downloadUrl(url[0]);
-            }catch(Exception e){
-                Log.d("Background Task",e.toString());
+            } catch (Exception e) {
+                Log.d("Background Task", e.toString());
             }
             return data;
         }
 
         // Executed after the complete execution of doInBackground() method
         @Override
-        protected void onPostExecute(String result){
+        protected void onPostExecute(String result) {
 
             // Instantiating ParserTask which parses the json data from Geocoding webservice
             // in a non-ui thread
@@ -300,23 +527,23 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
     }
 
     /** A class to parse the Geocoding Places in non-ui thread */
-    class ParserTask extends AsyncTask<String, Integer, List<HashMap<String,String>>> {
+    class ParserTask extends AsyncTask<String, Integer, List<HashMap<String, String>>> {
         JSONObject jObject;
 
         // Invoked by execute() method of this object
         @Override
-        protected List<HashMap<String,String>> doInBackground(String... jsonData) {
+        protected List<HashMap<String, String>> doInBackground(String... jsonData) {
 
             List<HashMap<String, String>> places = null;
             GeocodeJSONParser parser = new GeocodeJSONParser();
 
-            try{
+            try {
                 jObject = new JSONObject(jsonData[0]);
 
                 /** Getting the parsed data as a an ArrayList */
                 places = parser.parse(jObject);
 
-            }catch(Exception e){
+            } catch (Exception e) {
                 Log.d("Exception", e.toString());
             }
             return places;
@@ -324,12 +551,12 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
 
         // Executed after the complete execution of doInBackground() method
         @Override
-        protected void onPostExecute(List<HashMap<String,String>> list){
+        protected void onPostExecute(List<HashMap<String, String>> list) {
 
             // Clears all the existing markers
             mMap.clear();
 
-            for(int i=0;i<list.size();i++){
+            for (int i = 0; i < list.size(); i++) {
 
                 // Creating a marker
                 MarkerOptions markerOptions = new MarkerOptions();
@@ -358,7 +585,7 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
                 mMap.addMarker(markerOptions);
 
                 // Locate the first location
-                if(i==0)
+                if (i == 0)
                     mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             }
         }

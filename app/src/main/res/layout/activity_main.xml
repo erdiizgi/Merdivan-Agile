@@ -8,7 +8,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Gözlem Oluştur"
+        android:text="Gözlem Yarat"
         android:id="@+id/button1"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -18,8 +18,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Gözlem Detayı"
-        android:id="@+id/button2"
+        android:text="Gözlem Listesi"
+        android:id="@+id/button3"
         android:layout_below="@+id/button1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

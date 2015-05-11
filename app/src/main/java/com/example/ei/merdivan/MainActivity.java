@@ -15,7 +15,7 @@ import android.view.View.OnClickListener;
 public class MainActivity extends ActionBarActivity {
 
     Button observationButton;
-    Button observationDetailButton;
+    Button observationListButton;
     Database db;
 
     @Override
@@ -59,7 +59,7 @@ public class MainActivity extends ActionBarActivity {
         final Context context = this;
 
         observationButton = (Button) findViewById(R.id.button1);
-        observationDetailButton = (Button) findViewById(R.id.button2);
+        observationListButton = (Button) findViewById(R.id.button3);
 
         observationButton.setOnClickListener(new OnClickListener() {
 
@@ -71,10 +71,10 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        observationDetailButton.setOnClickListener(new OnClickListener() {
+        observationListButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ObservationDetail.class);
+                Intent intent = new Intent(context, ObservationList.class);
                 startActivity(intent);
             }
         });

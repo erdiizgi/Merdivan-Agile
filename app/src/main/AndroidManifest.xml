@@ -39,13 +39,13 @@
         </activity>
 
         <activity
-            android:name=".Observation"
-            android:label="@string/app_name" >
+            android:name=".ObservationList"
+            android:label="@string/title_activity_observation_list" >
         </activity>
 
         <activity
             android:name=".ObservationDetail"
-            android:label="@string/app_name" >
+            android:label="@string/title_activity_observation_detail" >
         </activity>
 
         <meta-data
