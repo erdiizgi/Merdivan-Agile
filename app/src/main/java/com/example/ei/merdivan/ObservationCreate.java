@@ -3,6 +3,8 @@ package com.example.ei.merdivan;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -31,6 +33,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -59,6 +62,8 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -69,8 +74,16 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.io.FileWriter;
+import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.widget.PopupWindow;
 import android.view.LayoutInflater;
 
@@ -86,7 +99,16 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
     private ImageButton cameraButton;
     private Button cancelButton,sendButton;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-
+    private String jsonPath = "observations.json";
+    private String topic ="";
+    private String status = "Onaylanmamış";
+    private String user = "TestUser";
+    private int vote = 0;
+    private String date = "";
+    private String summary;
+    private String address = "";
+    double latitude = 0;
+    double longitude = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +119,10 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
         cameraButton = (ImageButton) findViewById(R.id.cameraButton);
         cancelButton = (Button) findViewById(R.id.cancelButton);
         sendButton = (Button) findViewById(R.id.sendButton);
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        date = sdf.format(c.getTime());
 
         cameraButton.setOnClickListener(new OnClickListener() {
 
@@ -113,6 +139,14 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);
+            }
+        });
+
+        sendButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                sendJSON();
             }
         });
 
@@ -249,6 +283,100 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
         }
     }
 
+    public int NextObservationsId() throws JSONException {
+        JSONObject json = null;
+        int nextId = 0;
+
+        try {
+            json = new JSONObject(loadJSONFromAsset());
+
+            JSONArray jArray = json.getJSONArray("observations");
+            nextId = jArray.length()+1;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return nextId;
+    }
+
+    public void setAddressFromPositions()
+    {
+        try {
+
+            Geocoder geo = new Geocoder(ObservationCreate.this.getApplicationContext(), Locale.getDefault());
+            List<Address> addresses = geo.getFromLocation(latitude, longitude, 1);
+            if (addresses.isEmpty()) {
+                address = "Waiting for Location";
+            }
+            else {
+                if (addresses.size() > 0) {
+                    address = addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName();
+                    //Toast.makeText(getApplicationContext(), "Address:- " + addresses.get(0).getFeatureName() + addresses.get(0).getAdminArea() + addresses.get(0).getLocality(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace(); // getFromLocation() may sometimes fail
+        }
+    }
+
+    public void sendJSON()
+    {
+        int id = 0;
+        JSONObject jsonObj = new JSONObject();
+        try {
+            id = NextObservationsId();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            jsonObj.put("id", id);
+            jsonObj.put("topic", topic);
+            jsonObj.put("status", status);
+            jsonObj.put("user", user);
+            jsonObj.put("vote", vote);
+            jsonObj.put("date", date);
+            jsonObj.put("summary", "No Summary");
+            jsonObj.put("address", address);
+            jsonObj.put("latitude", latitude);
+            jsonObj.put("longitude", longitude);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String send = "Observation:"+ id +", "+topic+", "+status+", "+user+", "+vote+", "+date+", "+address+", "+latitude+", "+longitude;
+        Toast.makeText(getApplicationContext(),jsonObj.toString(), Toast.LENGTH_LONG).show();
+
+    }
+
+
+
+    public String loadJSONFromAsset() throws IOException {
+        String json = null;
+        try {
+
+            InputStream is = getAssets().open(jsonPath);
+
+            int size = is.available();
+
+            byte[] buffer = new byte[size];
+
+            is.read(buffer);
+
+            is.close();
+
+            json = new String(buffer, "UTF-8");
+
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
     public void dropPin() {
         gps = new GPSTracker(ObservationCreate.this);
 
@@ -296,6 +424,7 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
 
                     pwindo.dismiss();
                     Toast.makeText(ObservationCreate.this, "Elektrik Sorunu", Toast.LENGTH_SHORT).show();
+                    topic = "Elektrik Sorunu";
                     cameraButton.setVisibility(View.VISIBLE);
                     cancelButton.setVisibility(View.VISIBLE);
                     sendButton.setVisibility(View.VISIBLE);
@@ -303,8 +432,9 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
 
                     mMap.clear();
 
-                    double latitude = gps.getLatitude();
-                    double longitude = gps.getLongitude();
+                    latitude = gps.getLatitude();
+                    longitude = gps.getLongitude();
+                    setAddressFromPositions();
 
                     current= mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(latitude, longitude)).title("Elektrik Sorunu")
@@ -331,6 +461,7 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
 
                     pwindo.dismiss();
                     Toast.makeText(ObservationCreate.this,"Su Sorunu", Toast.LENGTH_SHORT).show();
+                    topic = "Su Sorunu";
                     cameraButton.setVisibility(View.VISIBLE);
                     cancelButton.setVisibility(View.VISIBLE);
                     sendButton.setVisibility(View.VISIBLE);
@@ -338,6 +469,7 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
 
                     double latitude = gps.getLatitude();
                     double longitude = gps.getLongitude();
+                    setAddressFromPositions();
 
                     current= mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(latitude, longitude)).title("Su Sorunu")
@@ -352,10 +484,6 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
 
             });
 
-
-
-
-
             imageButton3 = (ImageButton) layout.findViewById(R.id.ImageButton3);
 
             imageButton3.setOnClickListener(new OnClickListener() {
@@ -365,6 +493,7 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
 
                     pwindo.dismiss();
                     Toast.makeText(ObservationCreate.this,"Trafik Sorunu", Toast.LENGTH_SHORT).show();
+                    topic = "Trafik Sorunu";
                     cameraButton.setVisibility(View.VISIBLE);
                     cancelButton.setVisibility(View.VISIBLE);
                     sendButton.setVisibility(View.VISIBLE);
@@ -373,6 +502,7 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
 
                     double latitude = gps.getLatitude();
                     double longitude = gps.getLongitude();
+                    setAddressFromPositions();
 
                     current= mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(latitude, longitude)).title("Trafik Sorunu")
@@ -400,6 +530,7 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
 
                     pwindo.dismiss();
                     Toast.makeText(ObservationCreate.this,"Ağaç/Park", Toast.LENGTH_SHORT).show();
+                    topic = "Ağaç/Park";
                     cameraButton.setVisibility(View.VISIBLE);
                     cancelButton.setVisibility(View.VISIBLE);
                     sendButton.setVisibility(View.VISIBLE);
@@ -407,6 +538,7 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
 
                     double latitude = gps.getLatitude();
                     double longitude = gps.getLongitude();
+                    setAddressFromPositions();
 
                     current= mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(latitude, longitude)).title("Ağaç/Park")
@@ -434,11 +566,12 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
                     sendButton.setVisibility(View.VISIBLE);
                     pwindo.dismiss();
                     Toast.makeText(ObservationCreate.this,"Haşere/Hayvan", Toast.LENGTH_SHORT).show();
-
+                    topic = "Haşere/Hayvan";
                     mMap.clear();
 
                     double latitude = gps.getLatitude();
                     double longitude = gps.getLongitude();
+                    setAddressFromPositions();
 
                     current= mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(latitude, longitude)).title("Haşere/Hayvan")
@@ -464,6 +597,7 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
 
                     pwindo.dismiss();
                     Toast.makeText(ObservationCreate.this,"Diğer İstek", Toast.LENGTH_SHORT).show();
+                    topic = "Diğer İstek";
                     cameraButton.setVisibility(View.VISIBLE);
                     cancelButton.setVisibility(View.VISIBLE);
                     sendButton.setVisibility(View.VISIBLE);
@@ -472,6 +606,7 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
 
                     double latitude = gps.getLatitude();
                     double longitude = gps.getLongitude();
+                    setAddressFromPositions();
 
                     current= mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(latitude, longitude)).title("Diğer İstek")
