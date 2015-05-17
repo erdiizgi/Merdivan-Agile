@@ -355,7 +355,7 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
             jsonObj.put("user", user);
             jsonObj.put("vote", vote);
             jsonObj.put("date", date);
-            jsonObj.put("summary", "No Summary");
+            jsonObj.put("summary", textBox.getText().toString());
             jsonObj.put("address", address);
             jsonObj.put("latitude", latitude);
             jsonObj.put("longitude", longitude);
@@ -853,7 +853,6 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
         options.inSampleSize = scale;
         options.inJustDecodeBounds = false;
         bm = BitmapFactory.decodeFile(selectedImagePath, options);
-
     }
 
     ///////////////////////////////////////END OF CAMERA PART////////////////////////////////////////////////////////////////////////
