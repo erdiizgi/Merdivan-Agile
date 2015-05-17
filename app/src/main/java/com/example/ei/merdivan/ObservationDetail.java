@@ -1,6 +1,7 @@
 package com.example.ei.merdivan;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
@@ -56,6 +57,7 @@ public class ObservationDetail extends ActionBarActivity implements LocationList
     private TextView tvObsTopic; // Observation Topic
     private TextView tvObsDate; // Observation Date
     private TextView tvObsSummary; // Observation Summary
+    private TextView tvObsStatus; // Observation Status
     private double lat;
     private double lng;
 
@@ -69,7 +71,7 @@ public class ObservationDetail extends ActionBarActivity implements LocationList
         Bundle extras = getIntent().getExtras();
 
         // getting attached intent data
-        String product = extras.getString("observation status");
+        String status = extras.getString("observation status");
         String topic = extras.getString("observation topic");
         int vote = extras.getInt("observation vote");
         String date = extras.getString("observation date");
@@ -86,12 +88,20 @@ public class ObservationDetail extends ActionBarActivity implements LocationList
         mBtnUser = (Button)findViewById(R.id.user_button);  // User Button
         tvObsDate = (TextView)findViewById(R.id.observation_date); // Observation Date
         tvObsSummary = (TextView)findViewById(R.id.observation_summary); // Observation Summary
+        tvObsStatus = (TextView)findViewById(R.id.observation_status); // Observation Summary
 
         mBtnVote.setText(String.valueOf(vote) + "+ Oy");
         tvObsTopic.setText(topic);
         mBtnUser.setText(user);
         tvObsDate.setText("Açıklama: " + date);
         tvObsSummary.setText(summary);
+        tvObsStatus.setText(status);
+
+        if(status.equals("Onaylanmış")){
+            tvObsStatus.setTextColor(Color.parseColor("#4cd964"));
+        } else {
+            tvObsStatus.setTextColor(Color.parseColor("#d04456"));
+        }
 
         dropPin(topic, address, lat, lng);
     }

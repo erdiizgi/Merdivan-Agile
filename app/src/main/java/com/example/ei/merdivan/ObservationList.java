@@ -3,9 +3,12 @@ package com.example.ei.merdivan;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -23,6 +26,7 @@ import java.util.List;
 public class ObservationList extends Activity {
     final List<Observation> observations = new ArrayList<Observation>();
     private String jsonPath = "observations.json";
+    private EditText inputSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,8 @@ public class ObservationList extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        inputSearch = (EditText) findViewById(R.id.inputSearch);
 
         final ListView our_observation_list = (ListView) findViewById(R.id.list);
         final ObservationListAdapter adapter = new ObservationListAdapter(this, observations);
@@ -60,6 +66,38 @@ public class ObservationList extends Activity {
                 i.putExtra("observation lng", (double)observation_data.getLng());
 
                 startActivity(i);
+            }
+        });
+
+        inputSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ArrayList<Observation> temp = new ArrayList<Observation>();
+                int textlength = inputSearch.getText().length();
+                temp.clear();
+                for (int i = 0; i < observations.size(); i++) {
+                    if (textlength <= observations.get(i).getTopic().length()) {
+                        if(inputSearch.getText().toString().equalsIgnoreCase((String)observations.get(i).getTopic().subSequence(0,textlength))) {
+                            temp.add(observations.get(i));
+                        }
+                    }
+                }
+
+                ObservationListAdapter tempAdapter = new ObservationListAdapter(ObservationList.this, temp);
+                our_observation_list.setAdapter(tempAdapter);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
             }
         });
     }

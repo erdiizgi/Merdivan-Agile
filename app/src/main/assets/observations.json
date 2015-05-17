@@ -70,5 +70,53 @@
     "address" : "Karşıyaka, Bostanlı Vapur İskelesi, Türkiye",
     "lat" : 38.453369,
     "lng" : 27.097099
+    },
+    {
+    "id" : 7,
+    "topic" : "Su Sorunu",
+    "status" : "Onaylanmamış",
+    "user" : "Berk Sarı",
+    "vote" : 13,
+    "date" : "2015-04-02 09:25",
+    "summary" : "Özet Denemesi",
+    "address" : "Güzelbahçe, İzmir, Türkiye",
+    "lat" : 38.375415,
+    "lng" : 26.8752481
+    },
+    {
+    "id" : 8,
+    "topic" : "Trafik Sorunu",
+    "status" : "Onaylanmamış",
+    "user" : "Gizem Geçmen",
+    "vote" : 35,
+    "date" : "2014-11-05 16:45",
+    "summary" : "Özet Denemesi",
+    "address" : "Çiğli Metro Durağı, Çiğli, İzmir, Türkiye",
+    "lat" : 38.491747,
+    "lng" : 27.063773
+    },
+    {
+    "id" : 9,
+    "topic" : "Elektrik Sorunu",
+    "status" : "Onaylanmış",
+    "user" : "Emrah Orhun",
+    "vote" : 0,
+    "date" : "2014-12-11 16:00",
+    "summary" : "Özet Denemesi",
+    "address" : "Karataş Anadolu Lisesi, Mithatpaşa Caddesi, Konak, Türkiye",
+    "lat" : 38.410443,
+    "lng" : 27.12094
+    },
+    {
+    "id" : 10,
+    "topic" : "Diğer İstek",
+    "status" : "Onaylanmamış",
+    "user" : "Tunay Pilevneli",
+    "vote" : 21,
+    "date" : "2014-11-11 12:00",
+    "summary" : "Özet Denemesi",
+    "address" : "Üçkuyular Semt Garajı, İzmir, Türkiye",
+    "lat" : 38.398027,
+    "lng" : 27.066216
     }
 ]}

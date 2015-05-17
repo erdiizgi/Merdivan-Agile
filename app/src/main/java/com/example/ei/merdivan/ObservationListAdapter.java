@@ -10,19 +10,78 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Filter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ObservationListAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
     private List<Observation> mObservationList;
+    private List<Observation> filteredObservationList;
+    private ObservationFilter filter;
 
     public ObservationListAdapter(Activity activity, List<Observation> observations) {
         mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mObservationList = observations;
+        filteredObservationList = observations;
+        getFilter();
+    }
+
+    public Filter getFilter() {
+        if (filter == null){
+            filter  = new ObservationFilter();
+        }
+        return filter;
+    }
+
+    static class ViewHolder {
+        protected TextView text;
+        protected CheckBox checkbox;
+    }
+
+    private class ObservationFilter extends Filter
+    {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            constraint = constraint.toString().toLowerCase();
+            FilterResults result = new FilterResults();
+            if(constraint != null && constraint.toString().length() > 0)
+            {
+                ArrayList<Observation> filteredItems = new ArrayList<Observation>();
+
+                for(int i = 0, l = mObservationList.size(); i < l; i++)
+                {
+                    Observation m = mObservationList.get(i);
+                    if(m.getTopic().toLowerCase().contains(constraint))
+                        filteredItems.add(m);
+                }
+                result.count = filteredItems.size();
+                result.values = filteredItems;
+            }
+            else
+            {
+                synchronized(this)
+                {
+                    result.values = mObservationList;
+                    result.count = mObservationList.size();
+                }
+            }
+            return result;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            filteredObservationList = (ArrayList<Observation>)results.values;
+            notifyDataSetChanged();
+        }
     }
 
     @Override

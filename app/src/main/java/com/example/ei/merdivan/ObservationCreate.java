@@ -44,6 +44,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -96,8 +97,9 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
     private Marker current;
     public ImageButton imageButton1,imageButton2,imageButton3,imageButton4,imageButton5,imageButton6,imageButton7,imageButton8;
     private PopupWindow pwindo;
-    private ImageButton cameraButton;
+    private ImageButton cameraButton, cancelEditText;;
     private Button cancelButton,sendButton;
+    private EditText textBox;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String jsonPath = "observations.json";
     private String topic ="";
@@ -119,6 +121,8 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
         cameraButton = (ImageButton) findViewById(R.id.cameraButton);
         cancelButton = (Button) findViewById(R.id.cancelButton);
         sendButton = (Button) findViewById(R.id.sendButton);
+        textBox = (EditText) findViewById(R.id.textBox);
+        cancelEditText = (ImageButton) findViewById(R.id.cancel_edit_text);
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -141,6 +145,20 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
                 startActivity(intent);
             }
         });
+
+
+
+        ImageButton btn = (ImageButton) findViewById(R.id.cancel_edit_text);
+        btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                EditText et = (EditText) findViewById(R.id.textBox);
+                et.setText("");
+            }
+        });
+
+
 
         sendButton.setOnClickListener(new OnClickListener() {
 
@@ -403,6 +421,19 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
     }
 
 
+
+    private void hideKeyboard() {
+        // Check if no view has focus:
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+
+
+
     private void initiatePopupWindow() {
         try {
 // We need to get the instance of the LayoutInflater
@@ -428,6 +459,8 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
                     cameraButton.setVisibility(View.VISIBLE);
                     cancelButton.setVisibility(View.VISIBLE);
                     sendButton.setVisibility(View.VISIBLE);
+                    textBox.setVisibility(View.VISIBLE);
+                    cancelEditText.setVisibility(View.VISIBLE);
 
 
                     mMap.clear();
@@ -465,6 +498,9 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
                     cameraButton.setVisibility(View.VISIBLE);
                     cancelButton.setVisibility(View.VISIBLE);
                     sendButton.setVisibility(View.VISIBLE);
+                    textBox.setVisibility(View.VISIBLE);
+                    cancelEditText.setVisibility(View.VISIBLE);
+
                     mMap.clear();
 
                     double latitude = gps.getLatitude();
@@ -497,6 +533,8 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
                     cameraButton.setVisibility(View.VISIBLE);
                     cancelButton.setVisibility(View.VISIBLE);
                     sendButton.setVisibility(View.VISIBLE);
+                    textBox.setVisibility(View.VISIBLE);
+                    cancelEditText.setVisibility(View.VISIBLE);
 
                     mMap.clear();
 
@@ -534,6 +572,9 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
                     cameraButton.setVisibility(View.VISIBLE);
                     cancelButton.setVisibility(View.VISIBLE);
                     sendButton.setVisibility(View.VISIBLE);
+                    textBox.setVisibility(View.VISIBLE);
+                    cancelEditText.setVisibility(View.VISIBLE);
+
                     mMap.clear();
 
                     double latitude = gps.getLatitude();
@@ -564,6 +605,9 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
                     cameraButton.setVisibility(View.VISIBLE);
                     cancelButton.setVisibility(View.VISIBLE);
                     sendButton.setVisibility(View.VISIBLE);
+                    textBox.setVisibility(View.VISIBLE);
+                    cancelEditText.setVisibility(View.VISIBLE);
+
                     pwindo.dismiss();
                     Toast.makeText(ObservationCreate.this,"Haşere/Hayvan", Toast.LENGTH_SHORT).show();
                     topic = "Haşere/Hayvan";
@@ -601,6 +645,8 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
                     cameraButton.setVisibility(View.VISIBLE);
                     cancelButton.setVisibility(View.VISIBLE);
                     sendButton.setVisibility(View.VISIBLE);
+                    textBox.setVisibility(View.VISIBLE);
+                    cancelEditText.setVisibility(View.VISIBLE);
 
                     mMap.clear();
 
@@ -724,26 +770,26 @@ public class ObservationCreate extends ActionBarActivity implements LocationList
 
 ///////////////////////////////////////// CAMERA  PART ////////////////////////////////////////////////////////////////////////////////////////////
     private void selectImage() {
-        final CharSequence[] items = { "Take Photo", "Choose from Library",
-                "Cancel" };
+        final CharSequence[] items = { "Resim Çek", "Galeriden Seç",
+                "İptal" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ObservationCreate.this);
-        builder.setTitle("Add Photo!");
+        builder.setTitle("Resim Ekle!");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Take Photo")) {
+                if (items[item].equals("Resim Çek")) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(intent, REQUEST_CAMERA);
-                } else if (items[item].equals("Choose from Library")) {
+                } else if (items[item].equals("Galeriden Seç")) {
                     Intent intent = new Intent(
                             Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
                     startActivityForResult(
-                            Intent.createChooser(intent, "Select File"),
+                            Intent.createChooser(intent, "Dosya Seç"),
                             SELECT_FILE);
-                } else if (items[item].equals("Cancel")) {
+                } else if (items[item].equals("İptal")) {
                     dialog.dismiss();
                 }
             }

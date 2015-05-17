@@ -10,9 +10,18 @@
     tools:context=".ObservationList"
     >
 
+
+    <!-- Editext for Search -->
+    <EditText android:id="@+id/inputSearch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Kategoriye Göre Ara..."
+        android:inputType="textVisiblePassword"/>
+
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-     />
+        android:layout_below="@id/inputSearch" />
+
 </RelativeLayout>

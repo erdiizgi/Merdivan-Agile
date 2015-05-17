@@ -6,6 +6,8 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
     <Button
+        android:background="#e84b14"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Gözlem Yarat"
@@ -16,6 +18,8 @@
         android:layout_alignParentStart="true" />
 
     <Button
+        android:background="#e84b14"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Gözlem Listesi"
@@ -24,5 +28,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"/>
 </RelativeLayout>

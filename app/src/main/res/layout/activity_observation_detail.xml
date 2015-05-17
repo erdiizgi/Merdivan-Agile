@@ -35,7 +35,22 @@
         android:layout_toLeftOf="@+id/vote_button"
         android:layout_toStartOf="@+id/vote_button"
         android:layout_alignBottom="@+id/vote_button"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:gravity="center_vertical|left"
+        android:paddingLeft="16dp"/>
+
+    <TextView
+        android:background="#ffffff"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/vote_button"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:gravity="center"
+        android:id="@+id/observation_status"/>
+
 
     <LinearLayout
         android:background="#e5734b"
@@ -66,8 +81,7 @@
             android:id="@+id/user_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip" />
+            android:padding="5dp" />
 
     </LinearLayout>
 </RelativeLayout>
