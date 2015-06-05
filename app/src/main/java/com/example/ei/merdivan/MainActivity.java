@@ -16,6 +16,7 @@ public class MainActivity extends ActionBarActivity {
 
     Button observationButton;
     Button observationListButton;
+    Button dashboardButton;
     Database db;
 
     @Override
@@ -60,6 +61,7 @@ public class MainActivity extends ActionBarActivity {
 
         observationButton = (Button) findViewById(R.id.button1);
         observationListButton = (Button) findViewById(R.id.button3);
+        dashboardButton = (Button) findViewById(R.id.button2);
 
         observationButton.setOnClickListener(new OnClickListener() {
 
@@ -78,6 +80,15 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         });
+
+        dashboardButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, dashboard.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 }

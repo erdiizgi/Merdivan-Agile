@@ -24,10 +24,24 @@
         android:layout_height="wrap_content"
         android:text="Gözlem Listesi"
         android:id="@+id/button3"
+        android:layout_marginTop="36dp"
         android:layout_below="@+id/button1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:background="#e84b14"
+        android:textColor="#FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MERDİVAN DASHBOARD"
+        android:id="@+id/button2"
+        android:layout_marginTop="37dp"
+        android:layout_below="@+id/button3"
+        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
