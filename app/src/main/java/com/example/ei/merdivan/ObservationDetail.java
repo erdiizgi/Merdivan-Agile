@@ -104,6 +104,24 @@ public class ObservationDetail extends ActionBarActivity implements LocationList
         }
 
         dropPin(topic, address, lat, lng);
+
+        mBtnVote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+
+                Toast.makeText(getApplicationContext(),
+                        "1 Oy Arttırıldı!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        mBtnUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+
+                Toast.makeText(getApplicationContext(),
+                        "Veritabanı bağlantısı olmadığından kimlik sayfasına gidilemiyor!", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
